@@ -1,0 +1,26 @@
+DB_HOST=postgres
+DB_PORT=5432
+DB_USER=admin
+DB_PASS=admin
+DB_NAME=effi_core
+
+SECRET_KEY=YTnpdIfKLY36v0UcnRBBzlnL9DqAgC2oBWPCRbuK3nI= (секретный ключ для JWT)
+HASH=HS256 (кодировка для JWT)
+
+SMTP_HOST=smtp.mail.ru
+SMTP_PORT=465
+SMTP_EMAIL= example@mail.ru (в случае SMTP=0, может быть пустым)
+SMTP_PASS= examplepassword (в случае SMTP=0, может быть пустым)
+SMTP=0 (флаг для отправки сообщений через SMTP протокол 0-выкл, 1-вкл.
+При SMTP=0 - подтверждение почты происходит автоматически, а восстановления пароля не предусмотрено)
+
+REDIS_HOST=redis
+REDIS_PORT=6379
+
+DEVICE=mps
+MAX_FILE_SIZE_MB=15 (максимальный размер загружаемого файла)
+IMG_SIZE=100 (размер изображения 100х100)
+MODEL_WEIGHTS_PATH="weights/best_checkpoint.pth" (путь до весов)
+EMBED_DIM=128 (размер эмбеддинга)
+THRESHOLD_DEFAULT=0.5 (допустимая разница для входа по верификации)
+
