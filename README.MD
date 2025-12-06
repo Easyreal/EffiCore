@@ -145,7 +145,7 @@ REDIS_PORT=6379
 DEVICE=mps
 MAX_FILE_SIZE_MB=15 #(максимальный размер загружаемого файла)
 IMG_SIZE=100 #(размер изображения (100x100) — должен совпадать с размером, использованным при обучении модели.)
-MODEL_WEIGHTS_PATH="weights/best_checkpoint.pth" (путь до весов)
+MODEL_WEIGHTS_PATH="weights/best_checkpoint.pth" #(путь до весов)
 EMBED_DIM=128 #(размер эмбеддинга)
 THRESHOLD_DEFAULT=0.5 #(допустимая разница эмбеддингов для верификации по фото)
 ```
