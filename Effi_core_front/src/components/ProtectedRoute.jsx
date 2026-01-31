@@ -8,13 +8,13 @@ const ProtectedRoute = ({ children }) => {
   if (loading) {
     return (
       <div className="loading-container">
-        <div className="loading-spinner">Loading...</div>
+        <div className="loading-spinner">Загрузка...</div>
       </div>
     );
   }
 
   if (!isAuthenticated)  {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/login-face" replace />;
   }
 
 

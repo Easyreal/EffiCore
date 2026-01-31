@@ -51,7 +51,6 @@ class JwtController():
 
     @classmethod
     async def authenticate_user(cls, password: str, user_password):
-        print(password, user_password)
         if cls.verify_password(password, user_password):
             return True
         return False

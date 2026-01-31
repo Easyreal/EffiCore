@@ -1,18 +1,12 @@
 import React, { useRef, useState, useEffect } from "react";
-import { verifyByFace } from '../services/face.js';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext.jsx';
+import { apiService } from '../services/api.js';
 
-const FaceLogin = ({ email }) => {
+const FaceLogin = ({ email, onSuccess, onRequiresPin, onError }) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [stream, setStream] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
-
-
-  const { fetchCurrentUser } = useAuth();
+  const [localError, setLocalError] = useState(null);
 
   useEffect(() => {
     return () => {
@@ -21,13 +15,13 @@ const FaceLogin = ({ email }) => {
   }, [stream]);
 
   const startCamera = async () => {
-    setError(null);
+    setLocalError(null);
     try {
       const s = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: false });
       setStream(s);
       if (videoRef.current) videoRef.current.srcObject = s;
     } catch {
-      setError("Не удалось получить доступ к камере");
+      setLocalError("Не удалось получить доступ к камере");
     }
   };
 
@@ -39,10 +33,16 @@ const FaceLogin = ({ email }) => {
   };
 
   const captureAndSend = async () => {
-    setError(null);
+    setLocalError(null);
     if (!videoRef.current) return;
-    setLoading(true);
+    if (!email) {
+      const msg = 'Введите email перед отправкой фото';
+      setLocalError(msg);
+      onError?.(msg);
+      return;
+    }
 
+    setLoading(true);
     try {
       const video = videoRef.current;
       const canvas = canvasRef.current;
@@ -56,21 +56,35 @@ const FaceLogin = ({ email }) => {
       const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/jpeg", 0.9));
       if (!blob) throw new Error("Не удалось создать изображение");
 
-      const result = await verifyByFace(email, blob);
+      const form = new FormData();
+      form.append('email', email);
+      form.append('file', blob, 'capture.jpg');
 
+      const resp = await apiService.client.post('/face/verify', form, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+        withCredentials: true,
+      });
 
-      if (result?.efficore_token) localStorage.setItem('access_token', result.efficore_token);
-      if (result?.refresh_token) localStorage.setItem('refresh_token', result.refresh_token);
+      const data = resp.data || {};
 
-
-      if (typeof fetchCurrentUser === 'function') {
-        await fetchCurrentUser();
+      if (data.requires_pin) {
+        onRequiresPin?.({ user_id: data.user_id, emb_id: data.emb_id });
+        return;
       }
 
-      navigate('/dashboard');
+      if (data.efficore_token || data.refresh_token) {
+        localStorage.setItem('access_token', data.efficore_token);
+        localStorage.setItem('refresh_token', data.refresh_token);
+        onSuccess?.(data);
+        return;
+      }
+
+      onSuccess?.(data);
     } catch (err) {
-      const msg = err?.response?.data?.detail || err?.message || "Ошибка при верификации";
-      setError(msg);
+      console.error('Face verify error', err);
+      const msg = err?.response?.data?.detail || err?.response?.data || err?.message || 'Ошибка при верификации лица';
+      setLocalError(msg);
+      onError?.(msg);
     } finally {
       setLoading(false);
       stopCamera();
@@ -80,8 +94,12 @@ const FaceLogin = ({ email }) => {
   return (
     <div className="face-login">
       <div style={{ marginBottom: 12 }}>
-        <button type="button" onClick={startCamera} disabled={!!stream}>Открыть камеру</button>
-        <button type="button" onClick={stopCamera} disabled={!stream}>Закрыть камеру</button>
+        <button type="button" onClick={startCamera} disabled={!!stream || loading} className="btn-secondary">
+          Открыть камеру
+        </button>
+        <button type="button" onClick={stopCamera} disabled={!stream || loading} className="btn-secondary" style={{ marginLeft: 8 }}>
+          Закрыть камеру
+        </button>
       </div>
 
       <div style={{ display: "flex", gap: 12 }}>
@@ -90,12 +108,17 @@ const FaceLogin = ({ email }) => {
       </div>
 
       <div style={{ marginTop: 12 }}>
-        <button type="button" onClick={captureAndSend} disabled={!stream || loading || !email} className="btn-primary">
-          {loading ? "Проверка..." : "Войти по фото"}
+        <button
+          type="button"
+          onClick={captureAndSend}
+          disabled={!stream || loading}
+          className="btn-primary"
+        >
+          {loading ? "Проверка..." : "Войти по логин/фото"}
         </button>
       </div>
 
-      {error && <div className="error-message" style={{ marginTop: 8 }}>{error}</div>}
+      {(localError) && <div className="error-message" style={{ marginTop: 8 }}>{localError}</div>}
     </div>
   );
 };

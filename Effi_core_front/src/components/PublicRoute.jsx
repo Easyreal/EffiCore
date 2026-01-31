@@ -8,7 +8,7 @@ const PublicRoute = ({ children }) => {
   if (loading) {
     return (
       <div className="loading-container">
-        <div className="loading-spinner">Loading...</div>
+        <div className="loading-spinner">Загрузка...</div>
       </div>
     );
   }

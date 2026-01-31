@@ -1,7 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
-import LoginForm from './components/LoginForm';
+import LoginPasswordPage from './components/LoginForm.jsx';
+import LoginFacePage from './components/LoginFacePage.jsx';
 import RegisterForm from './components/RegisterForm';
 import ResetPasswordForm from './components/ResetPasswordForm';
 import EmailConfirmation from './components/EmailConfirmation';
@@ -9,6 +10,7 @@ import PasswordReset from './components/PasswordReset';
 import Dashboard from './components/Dashboard';
 import ProtectedRoute from './components/ProtectedRoute';
 import PublicRoute from './components/PublicRoute';
+import EnterPinPage from './components/EnterPinPage.jsx';
 import './styles/App.css';
 
 const App = () => {
@@ -21,7 +23,23 @@ const App = () => {
               path="/login"
               element={
                 <PublicRoute>
-                  <LoginFormWrapper />
+                  <LoginPasswordWrapper />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/enter-pin"
+              element={
+                <PublicRoute>
+                  <EnterPinPage />
+                </PublicRoute>
+              }
+            />
+            <Route
+              path="/login-face"
+              element={
+                <PublicRoute>
+                  <LoginFaceWrapper />
                 </PublicRoute>
               }
             />
@@ -75,14 +93,27 @@ const App = () => {
   );
 };
 
-// Обёртки
-const LoginFormWrapper = () => (
-  <LoginForm
+const LoginPasswordWrapper = () => (
+  <LoginPasswordPage
     onToggleMode={(mode) => {
       if (mode === 'register') {
         window.location.href = '/register';
       } else if (mode === 'reset') {
         window.location.href = '/reset-password';
+      } else if (mode === 'face') {
+        window.location.href = '/login-face';
+      }
+    }}
+  />
+);
+
+const LoginFaceWrapper = () => (
+  <LoginFacePage
+    onToggleMode={(mode) => {
+      if (mode === 'login') {
+        window.location.href = '/login';
+      } else if (mode === 'register') {
+        window.location.href = '/register';
       }
     }}
   />

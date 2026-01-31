@@ -101,7 +101,7 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setUser(null);
       setError(null);
-      window.location.href = '/login';
+      window.location.href = '/login-face';
     }
   };
 

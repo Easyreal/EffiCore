@@ -88,8 +88,7 @@ const RegisterForm = ({ onToggleMode }) => {
     <div className="auth-form">
       <div className="form-header">
         <UserPlus size={32} />
-        <h2>Create Account</h2>
-        <p>Join us today</p>
+        <h2>Регистрация</h2>
       </div>
 
       {displayedError && <div className="error-message">{displayedError}</div>}
@@ -100,7 +99,7 @@ const RegisterForm = ({ onToggleMode }) => {
           <input
             type="text"
             name="login"
-            placeholder="Username"
+            placeholder="Логин"
             value={formData.login}
             onChange={handleChange}
             required
@@ -112,7 +111,7 @@ const RegisterForm = ({ onToggleMode }) => {
             <input
               type="text"
               name="first_name"
-              placeholder="First Name"
+              placeholder="Имя"
               value={formData.first_name}
               onChange={handleChange}
             />
@@ -121,7 +120,7 @@ const RegisterForm = ({ onToggleMode }) => {
             <input
               type="text"
               name="last_name"
-              placeholder="Last Name"
+              placeholder="Фамилия"
               value={formData.last_name}
               onChange={handleChange}
             />
@@ -133,7 +132,7 @@ const RegisterForm = ({ onToggleMode }) => {
           <input
             type="email"
             name="email"
-            placeholder="Email address"
+            placeholder="Email"
             value={formData.email}
             onChange={handleChange}
             required
@@ -145,44 +144,44 @@ const RegisterForm = ({ onToggleMode }) => {
           <input
             type="password"
             name="password"
-            placeholder="Password"
+            placeholder="пароль"
             value={formData.password}
             onChange={handleChange}
             required
           />
         </div>
 
-        <FaceCapture initialFile={photoFile} onChangeFile={handleFaceFileChange} />
+        {/*<FaceCapture initialFile={photoFile} onChangeFile={handleFaceFileChange} />*/}
 
         <div style={{ marginTop: 12 }}>
-          {photoFile ? (
-            <div style={{ marginBottom: 12 }}>
-              <strong>Photo ready:</strong> {photoFile.name || 'capture.jpg'} ({Math.round((photoFile.size || 0) / 1024)} KB)
-            </div>
-          ) : (
-            <div style={{ marginBottom: 12, color: '#666' }}>No photo captured</div>
-          )}
+          {/*{photoFile ? (*/}
+          {/*  <div style={{ marginBottom: 12 }}>*/}
+          {/*    <strong>Фото:</strong> ({Math.round((photoFile.size || 0) / 1024)} KB)*/}
+          {/*  </div>*/}
+          {/*) : (*/}
+          {/*  <div style={{ marginBottom: 12, color: '#666' }}></div>*/}
+          {/*)}*/}
 
-          {uploadProgress !== null && (
-            <div style={{ marginBottom: 8 }}>
-              Upload progress: {uploadProgress}%
-            </div>
-          )}
+          {/*{uploadProgress !== null && (*/}
+          {/*  <div style={{ marginBottom: 8 }}>*/}
+          {/*    Upload progress: {uploadProgress}%*/}
+          {/*  </div>*/}
+          {/*)}*/}
 
           <button
             type="submit"
             className="btn-primary"
             disabled={!formData.email || !formData.password || submitting}
           >
-            {submitting ? 'Processing...' : 'Create Account'}
+            {submitting ? 'Processing...' : 'Зарегистрироваться'}
           </button>
         </div>
       </form>
 
       <div className="form-footer" style={{ marginTop: 12 }}>
         <p>
-          Already have an account?{' '}
-          <button type="button" onClick={onToggleMode} className="link-button">Sign in</button>
+          Уже есть аккаунт?{' '}
+          <button type="button" onClick={onToggleMode} className="link-button">Войти</button>
         </p>
       </div>
     </div>

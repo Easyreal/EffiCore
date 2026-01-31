@@ -19,9 +19,6 @@ origins = [
     "http://127.0.0.1:8080",
 ]
 
-# app/main.py
-
-
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,

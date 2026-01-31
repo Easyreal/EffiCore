@@ -1,6 +1,5 @@
 from fastapi import HTTPException, status
 
-
 UserAlreadyExists = HTTPException(
     status_code=status.HTTP_409_CONFLICT,
     detail='Пользователь с таким email уже существует'
@@ -18,20 +17,20 @@ IncorrectUserEmailOrPasswordException = HTTPException(
 
 EmailNotConfirmedException = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
-    detail='Пожалуйста подтвердите электронную почту'
+    detail='Пожалуйста, подтвердите электронную почту'
 )
 
 JWTExpiredException = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
-    detail='токен истек'
+    detail='Токен истёк'
 )
 
 IncorrectTokenType = HTTPException(
     status_code=status.HTTP_403_FORBIDDEN,
-    detail='неверный токен'
+    detail='Неверный тип токена'
 )
 
-IncorrectFormatJWTException =  HTTPException(
+IncorrectFormatJWTException = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
     detail='Неверный формат токена'
 )
@@ -41,11 +40,9 @@ NoExistUserException = HTTPException(
     detail='Пользователь не существует'
 )
 
-
-
 JwtDoesNotExist = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
-    detail='токен не существует'
+    detail='Токен не найден'
 )
 
 NoGivenToken = HTTPException(
@@ -55,46 +52,50 @@ NoGivenToken = HTTPException(
 
 InvalidImg = HTTPException(
     status_code=status.HTTP_400_BAD_REQUEST,
-    detail="Invalid image"
+    detail="Неверный формат изображения"
 )
 
 NoOpenImg = HTTPException(
     status_code=status.HTTP_400_BAD_REQUEST,
-    detail="Can not open image"
+    detail="Не удалось открыть изображение"
 )
 
-EmptyFile= HTTPException(
+EmptyFile = HTTPException(
     status_code=status.HTTP_400_BAD_REQUEST,
-    detail="Empty file"
+    detail="Пустой файл"
 )
 
 FileTooLarge = HTTPException(
     status_code=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE,
-    detail="File too large"
+    detail="Файл слишком большой"
 )
-
 
 InvalidEmb = HTTPException(
     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-    detail="Invalid embedding produced"
+    detail="Неверный эмбеддинг"
 )
 
 NoEmbForUser = HTTPException(
     status_code=status.HTTP_404_NOT_FOUND,
-    detail="No embedding registered for this user"
+    detail="Эмбеддинг для пользователя не найден"
 )
 
 EmbMiss = HTTPException(
     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-    detail="Embedding dimensionality mismatch"
+    detail="Несоответствие размерности эмбеддингов"
 )
 
 NoVerificationExc = HTTPException(
     status_code=status.HTTP_401_UNAUTHORIZED,
-    detail="Face verification failed"
+    detail="Проверка по лицу не пройдена"
 )
 
 NoOnSMTP = HTTPException(
     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-    detail="Pls turn on SMPT"
+    detail="Включите SMTP на сервере"
+)
+
+CantSaveEmb = HTTPException(
+    status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+    detail="Не удалось сохранить эмбеддинг"
 )

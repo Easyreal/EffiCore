@@ -1,5 +1,3 @@
-from sqlalchemy.sql import select
-from app.database import async_session
 from abc import ABCMeta, abstractmethod
 
 

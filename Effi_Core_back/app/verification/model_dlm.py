@@ -1,4 +1,3 @@
-# app/model.py
 from PIL import Image
 from fastapi.concurrency import run_in_threadpool
 import torchvision.transforms as T
@@ -12,7 +11,7 @@ from torch.serialization import safe_globals
 IMG_SIZE = settings.IMG_SIZE
 MODEL_WEIGHTS_PATH = settings.MODEL_WEIGHTS_PATH
 DEVICE = settings.get_device()
-
+EMBED_DIM = settings.EMBED_DIM
 eval_transform = T.Compose([
     T.Resize((IMG_SIZE, IMG_SIZE)),
     T.ToTensor(),
@@ -21,7 +20,7 @@ eval_transform = T.Compose([
 
 
 def load_model(weights_path=MODEL_WEIGHTS_PATH, device=DEVICE):
-    emb = EmbeddingNet(embedding_dim=128, pretrained=False)
+    emb = EmbeddingNet(embedding_dim=EMBED_DIM, pretrained=False)
     model = SiameseNet(emb)
 
     with safe_globals([np._core.multiarray.scalar]):
